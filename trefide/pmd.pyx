@@ -1273,8 +1273,9 @@ cpdef overlapping_pca_decompose(const int d1, const int d2, const int t,
 # Temporary TODO: Optimize, streamline, & add more options (multiple
 # simulations when block size large relative to FOV)
 def determine_thresholds(mov_dims, block_dims, num_components, max_iters_main,
-        max_iters_init, tol, d_sub, t_sub, conf, plot,
-        enable_temporal_denoiser=True, enable_spatial_denoiser=True):
+        max_iters_init, tol, d_sub, t_sub, conf, save_fig=False,
+        save_fig_path=None, enable_temporal_denoiser=True,
+        enable_spatial_denoiser=True):
     """Determine spatial and temporal threshold.
 
     Parameters
@@ -1298,8 +1299,10 @@ def determine_thresholds(mov_dims, block_dims, num_components, max_iters_main,
         temporal downsampling factor
     conf :
         confidence level to determine threshold for the summary statistics
-    plot :
-        whether plot
+    save_fig :
+        whether plot and save plot
+    save_fig_path:
+        path to save fig
     enable_temporal_denoiser : optional, default: True
         whether to enable temporal denoiser
     enable_spatial_denoiser : optional, default: True
@@ -1343,8 +1346,8 @@ def determine_thresholds(mov_dims, block_dims, num_components, max_iters_main,
     spatial_thresh = np.percentile(spatial_stat, conf)
     temporal_thresh = np.percentile(temporal_stat, conf)
 
-    if plot:
-        _, ax = plt.subplots(2, 2, figsize=(8, 8))
+    if save_fig:
+        fig, ax = plt.subplots(2, 2, figsize=(8, 8))
         ax[0, 0].scatter(spatial_stat, temporal_stat, marker='x', c='r', alpha =.2)
         ax[0, 0].axvline(spatial_thresh)
         ax[0, 0].axhline(temporal_thresh)
@@ -1354,6 +1357,9 @@ def determine_thresholds(mov_dims, block_dims, num_components, max_iters_main,
         ax[1, 0].hist(spatial_stat, bins=20, color='r')
         ax[1, 0].axvline(spatial_thresh)
         ax[1, 0].set_title("Spatial Threshold: {}".format(spatial_thresh))
-        plt.show()
+        if save_fig:
+            plt.savefig(f'{save_fig_path}/thresholds_plot.png')
+        else:
+            plt.show()
 
     return spatial_thresh, temporal_thresh

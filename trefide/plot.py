@@ -12,6 +12,8 @@ def pixelwise_ranks(rank_vec,
                     bheight,
                     bwidth,
                     figsize=(16, 16),
+                    save_fig=False,
+                    save_fig_path=None,
                     dataset=None):
     """ rank_vec should be column major ordered
 
@@ -23,6 +25,8 @@ def pixelwise_ranks(rank_vec,
         bheight: block height
         bwidth: block width
         figsize: fig size
+        save figure: save plot
+        save_fig_path: path to save plot to
         dataset: title to prepend
     """
 
@@ -48,4 +52,7 @@ def pixelwise_ranks(rank_vec,
         ax.set_title(dataset + " Pixel-Wise Ranks, Compression Factor: %.1f" % comp_factor)
     plt.colorbar(im, cax, orientation='vertical')
     plt.tight_layout()
-    plt.show()
+    if save_fig:
+        plt.savefig(f'{save_fig_path}/pixelwise_ranks_plot.png')
+    else:
+        plt.show()

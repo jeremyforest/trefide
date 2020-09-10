@@ -14,7 +14,7 @@ import trefide.extras.denoise as denoise
 # update noise estimators
 # clean up comments after revision
 
- 
+
 def correlation_pnr(Y,
                     gSig=None, #deprecated
                     center_psf=True,
@@ -629,8 +629,8 @@ def comparison_plot(cn_see,
                     remove_small_val=False,
                     plot_size = 12,
                     cbar_ticks_number=None,
-                   save_fig=False,
-                   save_fig_name='corr_'):
+                    save_fig=False,
+                    save_fig_path=None):
     """
     """
     num_plots = len(cn_see)
@@ -757,8 +757,7 @@ def comparison_plot(cn_see,
 
     plt.tight_layout()
     if save_fig:
-        save_fig_name = save_fig_name+'comparison_plot_'+'.pdf'
-        plt.savefig(save_fig_name)
+        plt.savefig(f'{save_fig_path}/comparison_plot.png')
     else:
         plt.show()
     return
